@@ -87,64 +87,64 @@ def get_from_publishers(search_string):
 
 
 # Update Book methods
-def update_book_title(new_value, old_value):
+def update_book_title(new_value, book_id):
     update_query = """UPDATE books SET book_title = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, book_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_book_publisher(new_value, old_value):
+def update_book_publisher(new_value, book_id):
     update_query = """UPDATE books SET publisher = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, book_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_book_author(new_value, old_value):
+def update_book_author(new_value, book_id):
     update_query = """UPDATE books SET author = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, book_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_book_publish_date(new_value, old_value):
+def update_book_publish_date(new_value, book_id):
     update_query = """UPDATE books SET publish_date = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, book_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_book_selling_price(new_value, old_value):
+def update_book_selling_price(new_value, book_id):
     update_query = """UPDATE books SET selling_price = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, book_id]
     execute_query(db_books, update_query, update_data)
 
 
 # Update Publisher methods
-def update_publisher_name(new_value, old_value):
+def update_publisher_name(new_value, publisher_id):
     update_query = """UPDATE publishers SET publisher_name = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, publisher_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_publisher_book_title(new_value, old_value):
+def update_publisher_book_title(new_value, publisher_id):
     update_query = """UPDATE publishers SET book_title = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, publisher_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_publisher_author(new_value, old_value):
+def update_publisher_author(new_value, publisher_id):
     update_query = """UPDATE publishers SET author = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, publisher_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_publisher_printed_quantity(new_value, old_value):
+def update_publisher_printed_quantity(new_value, publisher_id):
     update_query = """UPDATE publishers SET printed_quantity = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, publisher_id]
     execute_query(db_books, update_query, update_data)
 
 
-def update_publisher_printing_price(new_value, old_value):
+def update_publisher_printing_price(new_value, publisher_id):
     update_query = """UPDATE publishers SET printing_price = ? WHERE id = ?"""
-    update_data = [new_value, old_value]
+    update_data = [new_value, publisher_id]
     execute_query(db_books, update_query, update_data)
 
 
