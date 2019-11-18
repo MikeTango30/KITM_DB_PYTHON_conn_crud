@@ -2,7 +2,7 @@ import sqlite3
 import pprint
 
 
-def execute_query(db_name, query, entry):
+def execute_query(db_name, query, entry=None):
     connection = sqlite3.connect(db_name)
     connection_cursor = connection.cursor()
     connection_cursor.execute(query, entry)
@@ -18,7 +18,9 @@ def create_table(db_name, query):
     connection.close()
 
 
-def select_data(db_name, query, entry):
+def select_data(db_name, query, entry=None):
+    if entry is None:
+        entry = []
     connection = sqlite3.connect(db_name)
     connection_cursor = connection.cursor()
     connection_cursor.execute(query, entry)
@@ -38,7 +40,11 @@ books_table_query = """CREATE TABLE IF NOT EXISTS books (
                                                         author text,
                                                         publish_date date,
                                                         publisher text,
-                                                        selling_price numeric
+                                                        selling_price numeric,
+                                                        FOREIGN KEY (book_title)
+                                                        REFERENCES publishers (book_title)
+                                                        ON UPDATE CASCADE
+                                                        ON DELETE CASCADE
                                                         )"""
 publishers_table_query = """CREATE TABLE IF NOT EXISTS publishers (
                                                         id integer PRIMARY KEY,
@@ -161,68 +167,84 @@ def delete_publisher_by_id(publisher_id):
     execute_query(db_books, delete_query, entry_id)
 
 
+def potential_profit():
+    query = """SELECT SUM((selling_price - printing_price) * printed_quantity) 
+                                        FROM books 
+                                        JOIN publishers 
+                                        ON books.book_title=publishers.book_title"""
+    select_data(db_books, query)
+
+
 # Demo :)))
-print("Creating tables...")
+# print("Creating tables...")
 create_table(db_books, books_table_query)
 create_table(db_books, publishers_table_query)
-print("Inserting Books data...")
-insert_book("When Gravity Fails", "George Alec Effinger", 1987, "Audible", 21.99)
-insert_book("A Fire in The Sun", "George Alec Effinger", 1989, "Audible", 24.99)
-insert_book("The Exile Kiss", "George Alec Effinger", 1991, "Audible", 32.99)
-print("Done!")
-print("Books table data:")
-print("--------------------------------------------------------------------------")
-get_from_books("george")
-print("--------------------------------------------------------------------------")
-print(" ")
-print("Inserting Publishers data...")
-insert_publisher("Arbor House", "When Grovity Fails", "George Alec Effinger", 3000, 5.45)
-insert_publisher("Doubleday", "A Lure in The Sun", "George Alec Effinger", 5000, 6.45)
-insert_publisher("Doubleday", "The Exalted Kiss", "George Alec Effinger", 6500, 4.45)
-print("Done!")
-print("Publishers table:")
-print("--------------------------------------------------------------------------")
-get_from_publishers('george')
-print("--------------------------------------------------------------------------")
-print(" ")
-print("Updating Book Data..")
-update_book_publisher("Arbor House", 1)
-update_book_publisher("Doubleday", 2)
-update_book_publisher("Doubleday", 3)
-print("Done!")
-print("Updated Books table data:")
-print("--------------------------------------------------------------------------")
-get_from_books("george")
-print("--------------------------------------------------------------------------")
-print(" ")
-print("Updating Publishers Data..")
-update_publisher_book_title("When Gravity Fails", 1)
-update_publisher_book_title("A Fire in The Sun", 2)
-update_publisher_book_title("The Exile Kiss", 3)
-print("Done!")
-print("Updated Publishers Data:")
-print("--------------------------------------------------------------------------")
-get_from_publishers('george')
-print("--------------------------------------------------------------------------")
-print(" ")
-print("Deleting Books data...")
-delete_book_by_id(1)
-delete_book_by_id(2)
-delete_book_by_id(3)
-print("Done!")
-print("Deleted Books table data:")
-print("--------------------------------------------------------------------------")
-get_from_books("george")
-print("--------------------------------------------------------------------------")
-print(" ")
-print("Deleting Publishers data...")
-delete_publisher_by_id(1)
-delete_publisher_by_id(2)
-delete_publisher_by_id(3)
-print("Done!")
-print("Deleted Publishers Data:")
-print("--------------------------------------------------------------------------")
-get_from_publishers('george')
-print("--------------------------------------------------------------------------")
-print(" ")
-print("All done!")
+# print("Inserting Books data...")
+# insert_book("When Gravity Fails", "George Alec Effinger", 1987, "Audible", 10)
+# insert_book("A Fire in The Sun", "George Alec Effinger", 1989, "Audible", 10)
+# insert_book("The Exile Kiss", "George Alec Effinger", 1991, "Audible", 10)
+# print("Done!")
+# print("Books table data:")
+# print("--------------------------------------------------------------------------")
+# get_from_books("george")
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("Inserting Publishers data...")
+# insert_publisher("Arbor House", "When Gravity Fails", "George Alec Effinger", 1000, 5)
+# insert_publisher("Doubleday", "A Fire in The Sun", "George Alec Effinger", 1000, 5)
+# insert_publisher("Doubleday", "The Exile Kiss", "George Alec Effinger", 1000, 5)
+# print("Done!")
+# print("Publishers table:")
+# print("--------------------------------------------------------------------------")
+# get_from_publishers('george')
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("Updating Book Data..")
+# update_book_publisher("Arbor House", 1)
+# update_book_publisher("Doubleday", 2)
+# update_book_publisher("Doubleday", 3)
+# print("Done!")
+# print("Updated Books table data:")
+# print("--------------------------------------------------------------------------")
+# get_from_books("george")
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("Updating Publishers Data..")
+# update_publisher_book_title("When Gravity Fails", 1)
+# update_publisher_book_title("A Fire in The Sun", 2)
+# update_publisher_book_title("The Exile Kiss", 3)
+# print("Done!")
+# print("Updated Publishers Data:")
+# print("--------------------------------------------------------------------------")
+# get_from_publishers('george')
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("Deleting Books data...")
+# delete_book_by_id(1)
+# delete_book_by_id(2)
+# delete_book_by_id(3)
+# print("Done!")
+# print("Deleted Books table data:")
+# print("--------------------------------------------------------------------------")
+# get_from_books("george")
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("Deleting Publishers data...")
+# delete_publisher_by_id(1)
+# delete_publisher_by_id(2)
+# delete_publisher_by_id(3)
+# print("Done!")
+# print("Deleted Publishers Data:")
+# print("--------------------------------------------------------------------------")
+# get_from_publishers('george')
+# print("--------------------------------------------------------------------------")
+# print(" ")
+# print("All done!")
+
+
+query_sample = """SELECT books.book_title, printed_quantity, printing_price, selling_price 
+                                        FROM books 
+                                        JOIN publishers 
+                                        ON books.book_title=publishers.book_title"""
+select_data(db_books, query_sample)
+potential_profit()
