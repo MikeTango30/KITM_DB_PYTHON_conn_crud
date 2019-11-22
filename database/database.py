@@ -1,5 +1,7 @@
 import sqlite3
 import pprint
+from book import book
+from publisher import publisher
 
 
 def execute_query(db_name, query, entry=None):
@@ -57,18 +59,18 @@ publishers_table_query = """CREATE TABLE IF NOT EXISTS publishers (
 
 
 # Insert
-def insert_book(book_title, author, publish_date, publisher, selling_price):
+def insert_book(book):
     insert_query = """INSERT INTO books (book_title, author, publish_date, publisher, selling_price) 
                       VALUES(?, ?, ?, ?, ?)"""
-    book = [book_title, author, publish_date, publisher, selling_price]
-    execute_query(db_books, insert_query, book)
+    query_values = [book.book_title, book.author, book.publish_date, book.publisher, book.selling_price]
+    execute_query(db_books, insert_query, query_values)
 
 
-def insert_publisher(publisher_name, book_title, author, printed_quantity, printing_price):
+def insert_publisher(publisher):
     insert_query = """INSERT INTO publishers (publisher_name, book_title, author, printed_quantity, printing_price) 
                       VALUES(?, ?, ?, ?, ?)"""
-    publisher = [publisher_name, book_title, author, printed_quantity, printing_price]
-    execute_query(db_books, insert_query, publisher)
+    query_values = [publisher.publisher_name, publisher.book_title, publisher.author, publisher.printed_quantity, publisher.printing_price]
+    execute_query(db_books, insert_query, query_values)
 
 
 # Search
@@ -93,6 +95,11 @@ def get_from_publishers(search_string):
 
 
 # Update Book methods
+def update_book(new_value, book_object, field, book_id):
+    update_query = """UPDATE books SET ? = ? WHERE id = ?"""
+    update_data = (field, new_value, )
+
+
 def update_book_title(new_value, book_id):
     update_query = """UPDATE books SET book_title = ? WHERE id = ?"""
     update_data = [new_value, book_id]
@@ -242,9 +249,18 @@ create_table(db_books, publishers_table_query)
 # print("All done!")
 
 
-query_sample = """SELECT books.book_title, printed_quantity, printing_price, selling_price 
-                                        FROM books 
-                                        JOIN publishers 
-                                        ON books.book_title=publishers.book_title"""
-select_data(db_books, query_sample)
-potential_profit()
+# book = book.book("Conffesions of a Sociopath","M. E. Thomas", 2015, "Factory", 20.15)
+publisher = publisher.publisher("Factory", "M. E. Thomas", "Conffesions of a Sociopath", 5000, 5.12)
+# insert_book(book)
+# insert_publisher(publisher)
+
+# query_sample = """SELECT books.book_title, printed_quantity, printing_price, selling_price
+#                                         FROM books
+#                                         JOIN publishers
+#                                         ON books.book_title=publishers.book_title"""
+
+# queryBooks = "SELECT * FROM books"
+queryPublisher = "SELECT * FROM publishers"
+# select_data(db_books, queryBooks)
+select_data(db_books, queryPublisher)
+# potential_profit()

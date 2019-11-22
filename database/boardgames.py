@@ -1,30 +1,49 @@
 # Boardgames
 #
-# Game: id, title, designer, publisher, year, artist, selling_price,
-#       min_players, max_players, playing_time, age_from, genre, mechanics
-#                 *designers, *artists, *publishers
+# Game: id, title, selling_price, min_players, max_players, playing_time, age_from, genre (FK to genre)
 
-# Designer: game_id, first_name, last_name, age, sex,
-#           *publishers, *games, *artists
+# Designer: id, first_name, last_name, age
 
-# Publisher: game_id, publisher_name, game_title, printed_quantity, printing_price, designer, artist
-#       *games, *designers, *artists
+# Publisher: id, publisher_name, printed_quantity, printing_price
 
-# Artist: game_id, first_name, last_name, age, sex,
+# Artist: id, game_id, first_name, last_name, age
 #        *games, *publishers, *designers
+
+# Genres: id, genre
+
+# Many to Many
+# designer_id FK to designer:id, game_id FK to games:id
+# designer_id, publisher_id
+# designer_id, artist_id
+
+# publisher_id, game_id
+# publisher_id, artist_id
+
+# artist_id, game_id
 
 games_table = """CREATE TABLE IF NOT EXISTS boardgames (
                                                         id integer PRIMARY KEY,
                                                         game_title text NOT NULL,
-                                                        designer text,
-                                                        publisher text,
-                                                        year_published date,
-                                                        artist text,
-                                                        selling_price numeric,
-                                                        min_players integer,
-                                                        max_players integer,
-                                                        playing_time integer,
-                                                        age_from integer,
-                                                        genre text,
-                                                        mechanics text
+                                                        year_published date NOT NULL,
+                                                        selling_price numeric NOT NULL,
+                                                        min_players integer NOT NULL,
+                                                        max_players integer NOT NULL,
+                                                        playing_time integer NOT NULL,
+                                                        age_from integer NOT NULL,
+                                                        genre_id integer NOT NULL,
+                                                        )"""
+
+designers_table = """CREATE TABLE IF NOT EXISTS designers (
+                                                        id integer PRIMARY KEY,
+                                                        first_name text NOT NULL,
+                                                        last_name text NOT NULL,
+                                                        age integer NOT
+                                                        )"""
+
+publishers_table = """CREATE TABLE IF NOT EXISTS publishers (
+                                                        id integer PRIMARY KEY,
+                                                        publisher_name text NOT NULL,
+                                                         text NOT NULL,
+                                                        printed_quantity integer NOT NULL,
+                                                        printing_price integer NOT NULL
                                                         )"""
